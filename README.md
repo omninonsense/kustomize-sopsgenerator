@@ -83,13 +83,13 @@ if we have this problem in the future.
 <details>
 <summary><strong>Why not use an existing Kustomize+SOPS plugin?</strong></summary>
 
-I thing I went trhrough all of them, but none of them satisfied me in terms of quality.
+I think I went through all of them, but none of them satisfied me in terms of quality.
 
 There was a promising [one](https://github.com/goabout/kustomize-sopssecretgenerator) written in Go, but it was an _exec_ "plugin"
-that was concidentally written in Go, it wasn't an actual _Go plugin_. So, it didn't benefit from anything mentioned in the
+that was coincidentally written in Go, it wasn't an actual _Go plugin_. So, it didn't benefit from anything mentioned in the
 previous question, and was plagued by all the problems of exec plugins.
 
-A few others float out there, but they are examples or proof-of-concepts that din't look production ready, and had either awkward
+A few others float out there, but they are examples or proof-of-concepts that didn't look production ready, and had either awkward
 APIs that didn't resemble the other Kustomize APIs, or were incomplete.
 
 </details>
@@ -97,7 +97,7 @@ APIs that didn't resemble the other Kustomize APIs, or were incomplete.
 <details>
 <summary><strong>Why SOPS at all?</strong></summary>
 
-Another option that was consideted was Hashicorp's Vault, but Vault is a lot of setup:
+Another option that was considered was Hashicorp's Vault, but Vault is a lot of setup:
 
 - Vault cluster
 - Consul cluster
