@@ -1,0 +1,18 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "go.lintTool": "golangci-lint"
+  },
+  "extensions": {
+    "recommendations": [
+      "ms-vscode.go",
+      "ms-azuretools.vscode-docker",
+      "aaron-bond.better-comments",
+      "editorconfig.editorconfig"
+    ]
+  }
+}
