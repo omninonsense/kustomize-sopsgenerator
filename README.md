@@ -83,14 +83,16 @@ Provided you followed the previous steps, you can add more fixtures to `__test__
 
 ## Usage
 
-Currently, non-builtin plugins require you to use `kustomize` executable, _and_ to have kustomize built from source. Installing Go is very easy, as is compiling
-compiling and installing Kustomize:
+Currently, non-builtin plugins require you to use `kustomize` executable, _and_ to have it built from source. Installing Go is very easy, as is compiling
+and installing Kustomize:
 
 ```sh
 go get sigs.k8s.io/kustomize/kustomize/v3@v3.5.4
 ```
 
 That's it.
+
+The reason for this is explained in more depth in [_A little about Go Kustomize plugins_](/docs/kustomize-plugins.md).
 
 ## API
 
