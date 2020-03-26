@@ -1,0 +1,4 @@
+generators:
+  - sops.yaml
+resources:
+  - deployment.yaml

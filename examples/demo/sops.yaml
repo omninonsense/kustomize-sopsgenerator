@@ -1,0 +1,6 @@
+apiVersion: omninonsense.github.io/v1beta
+kind: SOPSGenerator
+metadata:
+  name: gossip
+envs:
+  - gossip.env
