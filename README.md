@@ -56,7 +56,7 @@ Testing is also straightforward, but there are a few extra steps that you need t
 To simplify testing, there's an ASCII armored PGP key pair provided in `__test__/pgp.asc`; import it into your PGP ring.
 
 You need to know which PGP executable you're using, since some of them aren't compatible/aware of eachother. Assuming you are on
-a relatively up-to-date system, you'll be using `gpg` by default, so this will suffice `gpg --import __test__/pgp.test`. If you're
+a relatively up-to-date system, you'll be using `gpg` by default, so this will suffice `gpg --import __test__/pgp.asc`. If you're
 using `gpg2`, then use that, but remember which PGP executable you're using.
 
 ### Running tests
