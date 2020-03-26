@@ -3,9 +3,10 @@ BUILDDIR := build
 # The key fingerprint from __test__/test_pgp.asc
 export SOPS_PGP_FP := F4F835FE4A069B4025A1000F896B05FFB977131D
 
+PLUGIN_DIR=$(shell go run SOPSGenerator.go build_helpers.go subdir)
 build: clean
-	mkdir -p $(BUILDDIR)
-	go build -buildmode=plugin -o $(BUILDDIR)/SOPSGenerator.so
+	mkdir -p $(BUILDDIR)/$(PLUGIN_DIR)
+	go build -buildmode=plugin -o $(BUILDDIR)/$(PLUGIN_DIR)/SOPSGenerator.so
 
 clean:
 	rm -rfv build/

@@ -8,7 +8,7 @@ import (
 	"io/ioutil"
 	"testing"
 
-	sg "github.com/omninonsense/kustomize-sopsgenerator"
+	sg "omninonsense.github.io/kustomize-sopsgenerator"
 
 	kusttest_test "sigs.k8s.io/kustomize/api/testutils/kusttest"
 )
