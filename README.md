@@ -137,7 +137,6 @@ See the examples folder for a more concrete example. The examples assume you imp
 
 ## TODO
 
-- Discuss with team to use [`go:generate`](https://golang.org/pkg/cmd/go/internal/generate/) instead of Makefiles, if they're comfortable with it, or at least for some tasks since it integrates better with Go.
 - More tests?
 - We could respect the desired sourcode structure that kustomize wants for plugins so we don't have to create `$HOME/sigs.k8s.io/kustomize/plugin`
 - Automate creation of `$HOME/kustomize/plugin`?
