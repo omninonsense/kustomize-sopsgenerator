@@ -38,7 +38,7 @@ No, `core/secrets` wasn't considered.
 
 ## Requirements
 
-- Go 1.13 ([instructions](https://golang.org/doc/install)) (version is important)
+- Go 1.13 ([instructions](https://golang.org/doc/install))
 - `kustomize` (`go get sigs.k8s.io/kustomize/kustomize/v3@v3.5.4`)
 - Make
 - [Mozilla's SOPS](https://github.com/mozilla/sops/)
@@ -47,9 +47,27 @@ No, `core/secrets` wasn't considered.
 
 Building is straightforward, just run `make` or `make build`
 
+## Installation
+
+It will install it into the first directory that it finds and that exists, in this order:
+
+- `$KUSTOMIZE_PLUGIN_HOME`, if you have it set
+- `$XDG_CONFIG_HOME/kustomize/plugin`, if `XDG_CONFIG_HOME` is set,
+- `$HOME/.config/kustomize/plugin`
+- `$HOME/kustomize/plugin`
+
+For development, `$HOME/kustomize/plugin` is usually good enough, unless you explicitly want to use `$KUSTOMIZE_PLUGIN_HOME`
+
 ## Testing
 
 Testing is also straightforward, but there are a few extra steps that you need to do initially, this is to simplify testing.
+
+Since the test framework is primarely designed to work within the kustomize repo, there is an extra step that needs to be done before
+tests can run them
+
+```sh
+mkdir -p $HOME/sigs.k8s.io/kustomize/plugin
+```
 
 ### Adding the SOPS testing PGP secret and public keys to your keyring
 
@@ -121,3 +139,5 @@ See the examples folder for a more concrete example. The examples assume you imp
 
 - Discuss with team to use [`go:generate`](https://golang.org/pkg/cmd/go/internal/generate/) instead of Makefiles, if they're comfortable with it, or at least for some tasks since it integrates better with Go.
 - More tests?
+- We could respect the desired sourcode structure that kustomize wants for plugins so we don't have to create `$HOME/sigs.k8s.io/kustomize/plugin`
+- Automate creation of `$HOME/kustomize/plugin`?
