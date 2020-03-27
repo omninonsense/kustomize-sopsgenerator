@@ -16,7 +16,7 @@ test:
 	go test
 
 install: $(BUILD_DIR)/$(PLUGIN_DIR)/$(KIND).so
-	install $< -D $@ $(shell go run SOPSGenerator.go build_helpers.go plugin-home)/$(PLUGIN_DIR)
+	install $< -D $(shell go run SOPSGenerator.go build_helpers.go plugin-home)/$(PLUGIN_DIR)/$(KIND).so
 
 # Encrypt files in __test__/plain.
 # TODO: Simplify this, if possible, or maybe just make it a shell script?
