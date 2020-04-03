@@ -26,7 +26,7 @@ type plugin struct {
 	h                *resmap.PluginHelpers
 	types.ObjectMeta `json:"metadata,omitempty" yaml:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
 	types.SecretArgs
-	opts types.GeneratorOptions
+	types.GeneratorOptions
 }
 
 //nolint: deadcode
@@ -52,6 +52,7 @@ var utf8bom = []byte{0xEF, 0xBB, 0xBF}
 // It determines which plugin to load using `Kind` and `Version`.
 func (p *plugin) Config(h *resmap.PluginHelpers, c []byte) error {
 	p.h = h
+	p.GeneratorOptions = types.GeneratorOptions{}
 
 	if err := yaml.Unmarshal(c, p); err != nil {
 		return err
@@ -126,7 +127,7 @@ func (p *plugin) Generate() (resmap.ResMap, error) {
 		args.LiteralSources = append(args.LiteralSources, name+"="+value)
 	}
 
-	return p.h.ResmapFactory().FromSecretArgs(kvLoader, &p.opts, args)
+	return p.h.ResmapFactory().FromSecretArgs(kvLoader, &p.GeneratorOptions, args)
 
 }
 
