@@ -67,6 +67,7 @@ func (p *plugin) Generate() (resmap.ResMap, error) {
 	args.Name = p.Name
 	args.Namespace = p.Namespace
 	args.Type = p.Type
+	args.Behavior = p.Behavior
 
 	loader := p.h.Loader()
 	validator := p.h.Validator()
