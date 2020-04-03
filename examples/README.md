@@ -12,6 +12,6 @@ export KUSTOMIZE_PLUGIN_HOME=$(readlink -f ../build)
 
 ## Demo example
 
-Adjust the `microk8s.kubectl` command as needed:
+Adjust the `kubectl` command as needed:
 
-Run `kustomize build --enable_alpha_plugins demo/ | microk8s.kubectl apply -f -`
+Run `kustomize build --enable_alpha_plugins demo/ | kubectl apply -f -`
