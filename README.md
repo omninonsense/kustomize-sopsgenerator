@@ -102,7 +102,8 @@ Provided you followed the previous steps, you can add more fixtures to `__test__
 ## Usage
 
 Currently, non-builtin plugins require you to use `kustomize` executable, _and_ to have it built from source. Installing Go is very easy, as is compiling
-and installing Kustomize:
+and installing Kustomize (**Note** due to a few issues in Go—[golang/go!17150] and [golang/go!24034]—you need to run the `go get` command
+below _in this directory_).
 
 ```sh
 go get sigs.k8s.io/kustomize/kustomize/v3@v3.5.4
@@ -111,6 +112,28 @@ go get sigs.k8s.io/kustomize/kustomize/v3@v3.5.4
 That's it.
 
 The reason for this is explained in more depth in [_A little about Go Kustomize plugins_](/docs/kustomize-plugins.md).
+
+## Docker image
+
+The docker image bundles kustomize and this plugin inside an Alpine Linux image.
+The purpose of this is to allow/simplify kustomize with the plugin inside our GitLab-CI pipeline.
+
+The image is called `registry.gitlab.com/mollybet/kustomize-sopsgenerator/kustomizer`.
+
+Something to keep in mind:
+
+- The default entrypoint is `[ "kustomize", "build", "--enable_alpha_plugins" ]`.
+- The default workdir is `/code`; GitLab-CI changes this to `/builds/{groupName}/{projectName}`
+  so generally don't have to worry about this part if running it from the CI.
+
+An example of how this might be used:
+
+```yaml
+job:
+  image:
+    name: registry.gitlab.com/mollybet/kustomize-sopsgenerator/kustomizer
+  script: ["kubernetes/my-service/overlays/staging"]
+```
 
 ## API
 
@@ -140,3 +163,6 @@ See the examples folder for a more concrete example. The examples assume you imp
 - More tests?
 - We could respect the desired sourcode structure that kustomize wants for plugins so we don't have to create `$HOME/sigs.k8s.io/kustomize/plugin`
 - Automate creation of `$HOME/kustomize/plugin`?
+
+[golang/go!17150]: https://github.com/golang/go/issues/17150
+[golang/go!24034]: https://github.com/golang/go/issues/24034

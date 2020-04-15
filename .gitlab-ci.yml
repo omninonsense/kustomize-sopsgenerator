@@ -1,0 +1,35 @@
+image: docker:19.03
+
+services:
+  - docker:dind
+
+variables:
+  FULL_IMAGE_NAME: $CI_REGISTRY/mollybet/kustomize-sopsgenerator/kustomizer
+
+create_image:
+  only:
+    - tags
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    # Alias version names so it's easier to understand what's going on below.
+    # The `| rev | cut -d"." -f2-  | rev` just pops the last rightmost fragment of
+    # the version
+    - export MAJOR_MINOR_PATCH=$CI_COMMIT_TAG
+    - export MAJOR_MINOR=$(echo $MAJOR_MINOR_PATCH | cut -d. -f1-2)
+    - export MAJOR=$(echo $MAJOR_MINOR | cut -d. -f1)
+  script:
+    # Publish latest
+    - docker build -t $FULL_IMAGE_NAME:latest .
+    - docker push $FULL_IMAGE_NAME:latest
+
+    # Publish patch
+    - docker tag $FULL_IMAGE_NAME:latest $FULL_IMAGE_NAME:$MAJOR_MINOR_PATCH
+    - docker push $FULL_IMAGE_NAME:$MAJOR_MINOR_PATCH
+
+    # Overwrite major minor version
+    - docker tag $FULL_IMAGE_NAME:latest $FULL_IMAGE_NAME:$MAJOR_MINOR
+    - docker push $FULL_IMAGE_NAME:$MAJOR_MINOR
+
+    # Overwrite major version
+    - docker tag $FULL_IMAGE_NAME:latest $FULL_IMAGE_NAME:$MAJOR
+    - docker push $FULL_IMAGE_NAME:$MAJOR
