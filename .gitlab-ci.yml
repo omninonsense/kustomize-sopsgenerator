@@ -15,8 +15,8 @@ create_image:
     # The `| rev | cut -d"." -f2-  | rev` just pops the last rightmost fragment of
     # the version
     - export MAJOR_MINOR_PATCH=$CI_COMMIT_TAG
-    - export MAJOR_MINOR=$(echo $MAJOR_MINOR_PATCH | rev | cut -d"." -f2- | rev)
-    - export MAJOR=$(echo $MAJOR_MINOR | rev | cut -d"." -f2- | rev)
+    - export MAJOR_MINOR=$(echo $MAJOR_MINOR_PATCH | cut -d. -f1-2)
+    - export MAJOR=$(echo $MAJOR_MINOR | cut -d. -f1)
   script:
     # Publish latest
     - docker build -t $FULL_IMAGE_NAME:latest .
