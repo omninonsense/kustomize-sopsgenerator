@@ -158,6 +158,21 @@ the need for it arises.
 
 See the examples folder for a more concrete example. The examples assume you imported the testing PGP key.
 
+### Logging
+
+To get more useful logging information, you can add the `omninonsense.github.io/sopsgenerator.logLevel` annotation, it accepts one of the following
+values (both sops and this plugin use [`logrus`](https://github.com/sirupsen/logrus)):
+
+- `panic`
+- `fatal`
+- `error`
+- (**default**) `warn`, or `warning`
+- `info`
+- `debug`
+- `trace`
+
+SOPS logs some failures as... Info. So, when in doubt, set log level to `debug`, it will at least point you in the right direction.
+
 ## TODO
 
 - More tests?

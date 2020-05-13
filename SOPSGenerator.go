@@ -14,6 +14,9 @@ import (
 	"go.mozilla.org/sops/v3/cmd/sops/formats"
 	"go.mozilla.org/sops/v3/decrypt"
 
+	logrus "github.com/sirupsen/logrus"
+	sopsLogging "go.mozilla.org/sops/v3/logging"
+
 	"sigs.k8s.io/kustomize/api/ifc"
 	"sigs.k8s.io/kustomize/api/kv"
 	"sigs.k8s.io/kustomize/api/resmap"
@@ -21,10 +24,15 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
+type PluginMeta struct {
+	types.ObjectMeta `json:",inline,omitempty" yaml:",inline,omitempty"`
+	Annotations      map[string]string `json:"annotations,omitempty" yaml:"annotations,omitempty"`
+}
+
 // A secret generator that reads SOPS encoded secrets and feeds them to a secreteGenerator
 type plugin struct {
-	h                *resmap.PluginHelpers
-	types.ObjectMeta `json:"metadata,omitempty" yaml:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
+	h          *resmap.PluginHelpers
+	PluginMeta `json:"metadata,omitempty" yaml:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
 	types.SecretArgs
 	types.GeneratorOptions
 }
@@ -48,14 +56,39 @@ var KustomizePlugin plugin
 
 var utf8bom = []byte{0xEF, 0xBB, 0xBF}
 
+// We use the SOPS wrapped logrus, so we can share loglevels with them
+var log = sopsLogging.NewLogger("SOPSGenerator")
+
+func sopsGenErr(err error) error {
+	log.Error(err)
+	return err
+}
+
+func fmtAnnotationName(annot string) string {
+	return fmt.Sprintf("%s/%s.%s", Domain, strings.ToLower(Kind), annot)
+}
+
 // Called by Kustomize to prime/configure the plugin with the YAML file
 // It determines which plugin to load using `Kind` and `Version`.
 func (p *plugin) Config(h *resmap.PluginHelpers, c []byte) error {
 	p.h = h
-	p.GeneratorOptions = types.GeneratorOptions{}
 
 	if err := yaml.Unmarshal(c, p); err != nil {
 		return err
+	}
+
+	logLevelAnnotation := fmtAnnotationName("logLevel")
+
+	if name, ok := p.PluginMeta.Annotations[logLevelAnnotation]; ok {
+		level, err := logrus.ParseLevel(name)
+
+		if err != nil {
+			log.Error(err)
+			return err
+		} else {
+			sopsLogging.SetLevel(level)
+		}
+
 	}
 
 	return nil
@@ -64,8 +97,8 @@ func (p *plugin) Config(h *resmap.PluginHelpers, c []byte) error {
 //
 func (p *plugin) Generate() (resmap.ResMap, error) {
 	args := types.SecretArgs{}
-	args.Name = p.Name
-	args.Namespace = p.Namespace
+	args.Name = p.PluginMeta.Name
+	args.Namespace = p.PluginMeta.Namespace
 	args.Type = p.Type
 	args.Behavior = p.Behavior
 
@@ -78,17 +111,19 @@ func (p *plugin) Generate() (resmap.ResMap, error) {
 	for _, fileEntry := range files {
 		key, fileName, err := parseFileEntry(fileEntry)
 		if err != nil {
-			return nil, err
+			return nil, sopsGenErr(err)
 		}
+
+		log.Debugf("Decrypting file '%s' as '%s'", fileName, key)
 
 		cipherText, err := loader.Load(fileName)
 		if err != nil {
-			return nil, err
+			return nil, sopsGenErr(err)
 		}
 
 		clearText, err := decrypt.DataWithFormat(cipherText, formats.FormatForPath(fileName))
 		if err != nil {
-			return nil, err
+			return nil, sopsGenErr(err)
 		}
 
 		// Intuitively, this might look like it would breake because it could lead to
@@ -110,23 +145,36 @@ func (p *plugin) Generate() (resmap.ResMap, error) {
 	for _, envEntry := range envs {
 		cipherText, err := loader.Load(envEntry)
 		if err != nil {
-			return nil, err
+			return nil, sopsGenErr(err)
 		}
+
+		log.Debugf("Decrypting env file '%s'", envEntry)
 
 		clearText, err := decrypt.DataWithFormat(cipherText, formats.Dotenv)
 		if err != nil {
-			return nil, err
+			return nil, sopsGenErr(err)
 		}
 
 		err = parseDotEnvFile(clearText, validator, envKvMap)
 
 		if err != nil {
-			return nil, err
+			return nil, sopsGenErr(err)
 		}
 	}
 
 	for name, value := range envKvMap {
 		args.LiteralSources = append(args.LiteralSources, name+"="+value)
+	}
+
+	if log.GetLevel() == logrus.DebugLevel {
+		keys := make([]string, 0, len(args.LiteralSources))
+
+		for _, secret := range args.LiteralSources {
+			name := strings.SplitN(secret, "=", 2)[0]
+			keys = append(keys, name)
+		}
+
+		log.Debugf("Generating secret '%s' with %d entries: %v", args.Name, len(keys), strings.Join(keys, ", "))
 	}
 
 	return p.h.ResmapFactory().FromSecretArgs(kvLoader, &p.GeneratorOptions, args)
