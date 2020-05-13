@@ -2,5 +2,7 @@ apiVersion: omninonsense.github.io/v1beta
 kind: SOPSGenerator
 metadata:
   name: gossip
+  annotations:
+    omninonsense.github.io/sopsgenerator.logLevel: debug
 envs:
   - gossip.env
