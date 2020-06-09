@@ -9,7 +9,7 @@
   },
   "extensions": {
     "recommendations": [
-      "ms-vscode.go",
+      "golang.go",
       "ms-azuretools.vscode-docker",
       "aaron-bond.better-comments",
       "editorconfig.editorconfig"
