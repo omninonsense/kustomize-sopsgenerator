@@ -60,15 +60,6 @@ For development, `$HOME/kustomize/plugin` is usually good enough, unless you exp
 
 ## Testing
 
-Testing is also straightforward, but there are a few extra steps that you need to do initially, this is to simplify testing.
-
-Since the test framework is primarely designed to work within the kustomize repo, there is an extra step that needs to be done before
-tests can run them
-
-```sh
-mkdir -p $HOME/sigs.k8s.io/kustomize/plugin
-```
-
 ### Adding the SOPS testing PGP secret and public keys to your keyring
 
 To simplify testing, there's an ASCII armored PGP key pair provided in `__test__/pgp.asc`; import it into your PGP ring.

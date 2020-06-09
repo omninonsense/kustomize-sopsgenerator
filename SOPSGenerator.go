@@ -177,8 +177,7 @@ func (p *plugin) Generate() (resmap.ResMap, error) {
 		log.Debugf("Generating secret '%s' with %d entries: %v", args.Name, len(keys), strings.Join(keys, ", "))
 	}
 
-	return p.h.ResmapFactory().FromSecretArgs(kvLoader, &p.GeneratorOptions, args)
-
+	return p.h.ResmapFactory().FromSecretArgs(kvLoader, args)
 }
 
 /*

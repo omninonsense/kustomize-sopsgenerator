@@ -10,9 +10,15 @@ build: clean
 	go build -buildmode=plugin -o $(BUILD_DIR)/$(PLUGIN_DIR)/$(KIND).so
 
 clean:
-	rm -rfv build/
+	rm -rfv $(BUILD_DIR)/
 
 test:
+	@echo "The Kustomize testing framwork still uses old locations for running tests instead of new ones"
+	@echo "So the tests will create ~/sigs.k8s.io/kustomize/ and build the the plugin into it before"
+	@echo "running the tests."
+	@echo
+	mkdir -p ${HOME}/sigs.k8s.io/kustomize/plugin
+	make clean build BUILD_DIR=${HOME}/sigs.k8s.io/kustomize/plugin
 	go test
 
 install: $(BUILD_DIR)/$(PLUGIN_DIR)/$(KIND).so

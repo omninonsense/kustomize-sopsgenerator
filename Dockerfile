@@ -19,7 +19,7 @@ RUN make install
 #   - https://github.com/golang/go/issues/17150
 #   - https://github.com/golang/go/issues/24034
 #
-RUN go get sigs.k8s.io/kustomize/kustomize/v3@v3.5.4
+RUN go get sigs.k8s.io/kustomize/kustomize/v3
 
 # We make it a multi-step build, because the go image, with all the other build dependencies
 # ends up being quite large (1.5 GB)

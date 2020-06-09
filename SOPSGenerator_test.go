@@ -16,8 +16,7 @@ import (
 // TODO: Write more tests
 func TestSOPSGeneratorPlugin(t *testing.T) {
 	th := kusttest_test.
-		MakeEnhancedHarness(t).
-		BuildGoPlugin(sg.Domain, sg.Version, sg.Kind)
+		MakeEnhancedHarness(t)
 
 	defer th.Reset()
 
