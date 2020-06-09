@@ -29,6 +29,3 @@ FROM alpine:latest
 ENV KUSTOMIZE_PLUGIN_HOME /kustomizer/plugins
 COPY --from=build ${KUSTOMIZE_PLUGIN_HOME} ${KUSTOMIZE_PLUGIN_HOME}
 COPY --from=build /go/bin/kustomize /usr/local/bin
-
-WORKDIR /code/
-ENTRYPOINT [ "kustomize", "build", "--enable_alpha_plugins" ]
