@@ -113,17 +113,13 @@ The image is called `registry.gitlab.com/mollybet/kustomize-sopsgenerator/kustom
 
 Something to keep in mind:
 
-- The default entrypoint is `[ "kustomize", "build", "--enable_alpha_plugins" ]`.
-- The default workdir is `/code`; GitLab-CI changes this to `/builds/{groupName}/{projectName}`
-  so generally don't have to worry about this part if running it from the CI.
-
 An example of how this might be used:
 
 ```yaml
 job:
-  image:
-    name: registry.gitlab.com/mollybet/kustomize-sopsgenerator/kustomizer
-  script: ["kubernetes/my-service/overlays/staging"]
+  image: registry.gitlab.com/mollybet/kustomize-sopsgenerator/kustomizer
+  script:
+    - kustomize build --enable_alpha_plugins path/to/kustomization -o output/dir
 ```
 
 ## API
