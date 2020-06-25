@@ -38,7 +38,7 @@ No, `core/secrets` wasn't considered.
 
 ## Requirements
 
-- Go 1.13 ([instructions](https://golang.org/doc/install))
+- Go 1.14 ([instructions](https://golang.org/doc/install))
 - `kustomize` (`go get sigs.k8s.io/kustomize/kustomize/v3@v3.5.4`)
 - Make
 - [Mozilla's SOPS](https://github.com/mozilla/sops/)
