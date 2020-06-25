@@ -25,7 +25,7 @@ func TestSOPSGeneratorPlugin(t *testing.T) {
 	env, _ := ioutil.ReadFile("__test__/encrypted/secret.env")
 
 	th.WriteF("secret.json", string(json))
-	th.WriteF("secret.yaml", string(yaml))
+	th.WriteF("top/secret.yaml", string(yaml))
 	th.WriteF("secret.env", string(env))
 
 	m := th.LoadAndRunGenerator(fmt.Sprintf(`
@@ -34,11 +34,13 @@ kind: %s
 metadata:
   name: zero-zero-seven
   namespace: test
+  annotations:
+    omninonsense.github.io/sopsgenerator.logLevel: debug
 envs:
   - secret.env
 files:
   - secret.json
-  - renamed.yaml=secret.yaml
+  - renamed.yaml=top/secret.yaml
 `, sg.Domain, sg.Version, sg.Kind))
 
 	th.AssertActualEqualsExpected(m, `
