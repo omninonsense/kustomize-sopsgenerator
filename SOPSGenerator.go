@@ -75,8 +75,7 @@ func (p *plugin) Config(h *resmap.PluginHelpers, c []byte) error {
 		level, err := logrus.ParseLevel(name)
 
 		if err != nil {
-			log.Error(err)
-			return err
+			return sopsGenErr(err)
 		} else {
 			sopsLogging.SetLevel(level)
 		}
@@ -109,7 +108,8 @@ func (p *plugin) Generate() (resmap.ResMap, error) {
 	secGenKvLoader := kv.NewLoader(secGenLoader, validator)
 
 	if err != nil {
-		log.Panicf("Error creating new loader: %v", err)
+		return nil, sopsGenErr(err)
+	}
 	}
 
 	files := p.GeneratorArgs.KvPairSources.FileSources
