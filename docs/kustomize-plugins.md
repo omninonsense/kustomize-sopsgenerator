@@ -29,6 +29,8 @@ The second reason is that, even if you were to download the latest `kustomize` f
 is compiled by Go with `CGO_ENABLED=0`, which means that the go `plugin` package is compiled with with a stub implementation,
 which just returns the error: `plugin: not implemented` ([source](https://golang.org/src/plugin/plugin_stubs.go)).
 
-This is probably a sidefect of wanting to avoid compilation skew problems associated dynamic linking?
+This is probably a sidefect of wanting to avoid compilation skew problems associated dynamic linking? Might have something to do with
+the fact that plugins include the whole runtime with them, and that everything is statically linked. So, if libraries mismatch, then
+Go complains at runtime as it tries to load the plugin.
 
 </details>
