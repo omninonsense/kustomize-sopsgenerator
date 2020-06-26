@@ -103,13 +103,18 @@ func (p *plugin) Generate() (resmap.ResMap, error) {
 	memfs := filesys.MakeFsInMemory()
 
 	// TODO: Would be nice to match the restriction from the "parent" loader, but I have no idea where to read the restriction from?
-	// We don't really _need_ to have any restrictions on the in-memory loader, since "our" loader will respect the restrictions
+	// We don't really need to have any restrictions on the in-memory loader, since "our" loader will respect the restrictions
 	secGenLoader, err := loader.NewLoader(loader.RestrictionNone, filesys.SelfDir, memfs)
 	secGenKvLoader := kv.NewLoader(secGenLoader, validator)
 
 	if err != nil {
 		return nil, sopsGenErr(err)
 	}
+
+	lits := p.GeneratorArgs.KvPairSources.LiteralSources
+	if len(lits) > 0 {
+		err = fmt.Errorf("Literals are not supported in %s. You can use envs to get similar results", Kind)
+		return nil, sopsGenErr(err)
 	}
 
 	files := p.GeneratorArgs.KvPairSources.FileSources
