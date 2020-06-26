@@ -74,10 +74,6 @@ The reason for this is explained in more depth in [_A little about Go Kustomize 
 The docker image bundles kustomize and this plugin inside an Alpine Linux image.
 The purpose of this is to allow/simplify kustomize with the plugin inside our GitLab-CI pipeline.
 
-The image is called `registry.gitlab.com/mollybet/kustomize-sopsgenerator/kustomizer`.
-
-Something to keep in mind:
-
 An example of how this might be used:
 
 ```yaml
