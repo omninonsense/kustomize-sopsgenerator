@@ -2,40 +2,6 @@
 
 A Kustomize generator plugin that reads SOPS encoded files and converts them to Kubernetes Secrets
 
-<details>
-<summary><strong>Why SOPS at all?</strong></summary>
-
-Another option that was considered was Hashicorp's Vault, but Vault is a lot of setup:
-
-- Vault cluster
-- Consul cluster
-- a load balancer
-- AWS VPCs
-- unsealing via Shamit secret sharing
-  - manual/operator based
-  - could be automated with AWS KMS, though
-- S3 for storing secrets (or something else)
-- AWS AMIs
-- AWS IAMs
-- Consul ACLS
-- Vault ACLs
-- … and the rest of the alphabet
-
-None of these are unsurmountable, they're all documented, and Vault is a great piece of software,
-but the main problem is that our current workflow and setup is radically different from using something like Vault.
-So switching to Vault would be a huge technological and mental overhead for everyone.
-
-So, while looking for a middle ground, I found SOPS. We still get to keep our secrets in git, our deployments won't change too much
-things will more or less have the same access to secrets as they had before, and we get to remove Ansible and Ansible Vault from
-our workflow/deployment while simplifying it.
-
-Additionally, SOPS can publish secrets to Vault, so if we want to migrate to Vault or use it alongside SOPS, we have the option to
-do it gradually, or on a per-needed basis.
-
-No, `core/secrets` wasn't considered.
-
-</details>
-
 ## Requirements
 
 - Go 1.14 ([instructions](https://golang.org/doc/install))
@@ -162,9 +128,10 @@ SOPS logs some failures as... Info. So, when in doubt, set log level to `debug`,
 
 ## TODO
 
-- More tests?
-- We could respect the desired sourcode structure that kustomize wants for plugins so we don't have to create `$HOME/sigs.k8s.io/kustomize/plugin`
-- Automate creation of `$HOME/kustomize/plugin`?
+- More tests
+- Don't use kustomize's internal testing framework, since it wants things inside `~/`
+- Consider switching to an executor plugin? Go's compilation skew might become an annoying problem in the future
+
 
 [golang/go!17150]: https://github.com/golang/go/issues/17150
 [golang/go!24034]: https://github.com/golang/go/issues/24034
