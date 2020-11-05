@@ -96,6 +96,7 @@ func (p *plugin) Generate() (resmap.ResMap, error) {
 	args.Type = p.Type
 	args.Behavior = p.Behavior
 	args.KvPairSources = p.GeneratorArgs.KvPairSources
+	args.Options = p.Options
 
 	pluginLoader := p.h.Loader()
 	validator := p.h.Validator()
