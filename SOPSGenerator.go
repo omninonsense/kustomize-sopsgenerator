@@ -30,7 +30,6 @@ type plugin struct {
 	h          *resmap.PluginHelpers
 	PluginMeta `json:"metadata,omitempty" yaml:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
 	types.SecretArgs
-	types.GeneratorOptions
 }
 
 //nolint: deadcode
