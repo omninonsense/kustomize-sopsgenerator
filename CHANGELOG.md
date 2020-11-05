@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.1.3
+
+Fixes:
+
+- Pass `options` to the underlying `SecretGenerator` (e138f1d)
+
 ## v1.1.2
 
 Fixes:
