@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.1.4
+
+Misc:
+
+ - Upgrade Logrus to v1.7.0
+ - Upgrade SOPS to v3.6.1
+ - Upgrade Kustomize API to v0.6.4
+
 ## v1.1.3
 
 Fixes:
