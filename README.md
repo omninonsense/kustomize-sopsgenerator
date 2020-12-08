@@ -11,7 +11,7 @@ A Kustomize generator plugin that reads SOPS encoded files and converts them to 
 
 ## Building
 
-Building is straightforward, just run `make` or `make build`
+Building is straightforward, just run `make build`
 
 ## Installation
 
@@ -62,7 +62,7 @@ Currently, non-builtin plugins require you to use `kustomize` executable, _and_ 
 and installing Kustomize (you _need_ to run the `go get` command below _in this repo_).
 
 ```sh
-go get sigs.k8s.io/kustomize/kustomize/v3@v3.5.4
+go get sigs.k8s.io/kustomize/kustomize/v3@v3.8.6
 ```
 
 That's it.
