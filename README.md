@@ -4,8 +4,8 @@ A Kustomize generator plugin that reads SOPS encoded files and converts them to 
 
 ## Requirements
 
-- Go 1.14 ([instructions](https://golang.org/doc/install))
-- `kustomize` (`go get sigs.k8s.io/kustomize/kustomize/v3@v3.8.6`)
+- Go 1.16 (needs cgo support, so follow [the official installation instructions](https://golang.org/doc/install))
+- `kustomize` (`go get sigs.k8s.io/kustomize/kustomize/v3@v3.10.0`)
 - Make
 - [Mozilla's SOPS](https://github.com/mozilla/sops/)
 
