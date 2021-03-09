@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.1.5
+
+Misc:
+
+ - Upgrade Kustomize API to v0.8.0
+
 ## v1.1.4
 
 Misc:
